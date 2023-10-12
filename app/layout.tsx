@@ -1,8 +1,6 @@
 import { Providers } from "@/components/Providers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,17 +15,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerComponentClient({ cookies });
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const accessToken = session?.access_token || null;
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers accessToken={accessToken}>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,56 +1,29 @@
 "use client";
 
 import { theme } from "@/lib/theme";
-import { StyleProvider } from "@ant-design/cssinjs";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { StyleProvider, createCache, extractStyle } from "@ant-design/cssinjs";
+import Entity from "@ant-design/cssinjs/lib/Cache";
 import { ConfigProvider } from "antd";
-import { useRouter } from "next/navigation";
-import { createContext, useEffect } from "react";
+import { useServerInsertedHTML } from "next/navigation";
+import { useMemo } from "react";
 
-export const AuthContext = createContext(null);
-
-export const Providers = ({
-  accessToken,
-  children,
-}: {
-  accessToken: string | null;
-  children: React.ReactNode;
-}) => {
-  // Token refreshing.
-
-  const supabase = createClientComponentClient();
-  const router = useRouter();
-
-  useEffect(() => {
-    const {
-      data: { subscription: authListener },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.access_token !== accessToken) {
-        router.refresh();
-      }
-    });
-
-    return () => {
-      authListener?.unsubscribe();
-    };
-  }, [accessToken, supabase, router]);
-
+export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ConfigProvider theme={theme}>
-      <StyleProvider hashPriority="high">{children}</StyleProvider>
-    </ConfigProvider>
+    <StyledComponentsRegistry>
+      <ConfigProvider theme={theme}>{children}</ConfigProvider>
+    </StyledComponentsRegistry>
   );
 };
 
 // TODO:
 
-// const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
-//   const cache = useMemo<Entity>(() => createCache(), []);
-//   useServerInsertedHTML(() => (
-//     <style
-//       id="antd"
-//       dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
-//     />
-//   ));
-//   return <StyleProvider cache={cache}>{children}</StyleProvider>;
-// };
+const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
+  const cache = useMemo<Entity>(() => createCache(), []);
+  useServerInsertedHTML(() => (
+    <style
+      id="antd"
+      dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
+    />
+  ));
+  return <StyleProvider cache={cache}>{children}</StyleProvider>;
+};

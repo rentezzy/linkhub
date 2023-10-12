@@ -1,17 +1,14 @@
 import { LogOut } from "@/components/Auth/LogOut";
+import { getUser } from "@/lib/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export default async function Dashboard() {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const userData = user?.user_metadata.username || null;
+  const user = await getUser();
+  const userData = user?.user_metadata.username || "TEXT";
   return (
     <div>
-      <p>{userData}</p>
+      {userData}
       <LogOut />
     </div>
   );
