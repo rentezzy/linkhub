@@ -12,5 +12,9 @@ export const LogOut = () => {
       router.replace("/");
     }
   }
-  return <Button onClick={logOut}>Log Out</Button>;
+  return (
+    <Button onClick={logOut} type="primary">
+      Log Out
+    </Button>
+  );
 };

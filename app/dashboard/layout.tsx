@@ -1,3 +1,4 @@
+import { Header } from "@/components/Header";
 import { UserProviders } from "@/lib/UserProvider";
 import { getSession, getUser } from "@/lib/supabase";
 export default async function DashboardLayout({
@@ -11,6 +12,7 @@ export default async function DashboardLayout({
   const accessToken = session?.access_token || null;
   return (
     <UserProviders accessToken={accessToken} user={user}>
+      <Header />
       {children}
     </UserProviders>
   );
