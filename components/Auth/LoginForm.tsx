@@ -2,6 +2,7 @@
 import { emailRules, passwordRules } from "@/lib/validators";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button, Form, Input, notification } from "antd";
+import { useRouter } from "next/navigation";
 
 type FieldType = {
   email: string;
@@ -10,7 +11,7 @@ type FieldType = {
 
 export const LoginForm = () => {
   const supabase = createClientComponentClient();
-
+  const router = useRouter();
   async function logIn(values: FieldType) {
     const { error } = await supabase.auth.signInWithPassword(values);
     if (error) {
@@ -19,6 +20,8 @@ export const LoginForm = () => {
         message: error.message,
         duration: 2,
       });
+    } else {
+      router.push("/dashboard");
     }
   }
   return (
@@ -27,7 +30,6 @@ export const LoginForm = () => {
       layout="vertical"
       initialValues={{ remember: true }}
       onFinish={logIn}
-      autoComplete="off"
       size="large"
       requiredMark="optional"
     >
