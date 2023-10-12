@@ -1,12 +1,18 @@
-"use client";
+import { LogOut } from "@/components/Auth/LogOut";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Button } from "antd";
+export default async function Dashboard() {
+  const supabase = createServerComponentClient({ cookies });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default function Dashboard() {
-  const supabase = createClientComponentClient();
-  async function logOut() {
-    const { error } = await supabase.auth.signOut();
-  }
-  return <Button onClick={logOut}>Log Out</Button>;
+  const userData = user?.user_metadata.username || null;
+  return (
+    <div>
+      <p>{userData}</p>
+      <LogOut />
+    </div>
+  );
 }

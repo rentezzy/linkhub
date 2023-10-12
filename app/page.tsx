@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/Auth/LoginForm";
+import { SignUpForm } from "@/components/Auth/SignUpForm";
 import { Tabs, TabsProps } from "antd";
 
 const items: TabsProps["items"] = [
@@ -10,7 +11,7 @@ const items: TabsProps["items"] = [
   {
     key: "2",
     label: "Sign-up",
-    children: "Sign 2up",
+    children: <SignUpForm />,
   },
 ];
 
