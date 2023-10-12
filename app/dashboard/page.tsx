@@ -7,9 +7,6 @@ export default async function Dashboard() {
   const user = await getUser();
   const userData = user?.user_metadata.username || "TEXT";
   return (
-    <div>
-      {userData}
-      <LogOut />
-    </div>
+    <div className="h-[40px] border border-primary rounded-md">Toolbox</div>
   );
 }
