@@ -3,18 +3,19 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Steps, message } from "antd";
 import { useState } from "react";
+import { FirstStage } from "./CreateStages";
 
 const steps = [
   {
-    title: "First",
-    content: "First-content",
+    title: "Create page",
+    content: <FirstStage />,
   },
   {
-    title: "Second",
+    title: "Links",
     content: "Second-content",
   },
   {
-    title: "Last",
+    title: "Finish",
     content: "Last-content",
   },
 ];
@@ -45,11 +46,16 @@ export const CreateLinkList = () => {
         CreateLink
       </Button>
       <Modal
-        title="Basic Modal"
+        title="Create your link list!"
         open={isModalOpen}
         onCancel={closeModal}
         footer={
           <div style={{ marginTop: 24 }}>
+            {currentStep > 0 && (
+              <Button style={{ margin: "0 8px" }} onClick={() => prevStep()}>
+                Previous
+              </Button>
+            )}
             {currentStep < steps.length - 1 && (
               <Button type="primary" onClick={() => nextStep()}>
                 Next
@@ -63,22 +69,19 @@ export const CreateLinkList = () => {
                 Done
               </Button>
             )}
-            {currentStep > 0 && (
-              <Button style={{ margin: "0 8px" }} onClick={() => prevStep()}>
-                Previous
-              </Button>
-            )}
           </div>
         }
         keyboard
         maskClosable
       >
-        <Steps
-          current={currentStep}
-          items={items}
-          onChange={onChangeCurrentStep}
-        />
-        <div>{steps[currentStep].content}</div>
+        <div className="">
+          <Steps
+            current={currentStep}
+            items={items}
+            onChange={onChangeCurrentStep}
+          />
+          <div className="mt-[24px]">{steps[currentStep].content}</div>
+        </div>
       </Modal>
     </div>
   );

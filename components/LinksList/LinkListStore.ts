@@ -3,12 +3,12 @@ import { create } from "zustand";
 type State = {
   linkList: {
     title: string;
-    bg?: string;
+    bg: string;
   };
   links: {
     href: string;
     text: string;
-    bg?: string;
+    bg: string;
   }[];
 };
 
@@ -20,7 +20,7 @@ type Action = {
 };
 
 export const useLinkListStore = create<State & Action>((set) => ({
-  linkList: { title: "LinkHub" },
+  linkList: { title: "LinkHub", bg: "#07EFB1" },
   links: [],
   updateLinkList(linkList) {
     set(() => ({ linkList }));
