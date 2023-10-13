@@ -41,5 +41,8 @@ export const UserProviders = ({
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
 export const useUser = () => {
-  return useContext(UserContext);
+  const router = useRouter();
+  const user = useContext(UserContext);
+  if (!user) router.push("/");
+  return user as User;
 };

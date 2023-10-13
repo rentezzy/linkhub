@@ -1,12 +1,15 @@
-import { LogOut } from "@/components/Auth/LogOut";
+import { CreateLinkList } from "@/components/LinksList/CreateLinkList";
 import { getUser } from "@/lib/supabase";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { Divider } from "antd";
 
 export default async function Dashboard() {
   const user = await getUser();
-  const userData = user?.user_metadata.username || "TEXT";
   return (
-    <div className="h-[40px] border border-primary rounded-md">Toolbox</div>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center">
+        <CreateLinkList />
+      </div>
+      <Divider style={{ margin: 0 }} />
+    </div>
   );
 }

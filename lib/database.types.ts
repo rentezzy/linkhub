@@ -9,7 +9,65 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      [_ in never]: never;
+      link_list: {
+        Row: {
+          author: string | null;
+          background: string;
+          code: string;
+          created_at: string;
+          id: number;
+          title: string;
+          visit: number;
+        };
+        Insert: {
+          author?: string | null;
+          background?: string;
+          code?: string;
+          created_at?: string;
+          id?: number;
+          title?: string;
+          visit?: number;
+        };
+        Update: {
+          author?: string | null;
+          background?: string;
+          code?: string;
+          created_at?: string;
+          id?: number;
+          title?: string;
+          visit?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "link_list_author_fkey";
+            columns: ["author"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      profiles: {
+        Row: {
+          id: string;
+          username: string | null;
+        };
+        Insert: {
+          id: string;
+          username?: string | null;
+        };
+        Update: {
+          id?: string;
+          username?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
