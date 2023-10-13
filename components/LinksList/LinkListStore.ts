@@ -27,13 +27,14 @@ export const useLinkListStore = create<State & Action>((set) => ({
   },
   addLinks(link) {
     set((state) => {
-      const links = [...state.links, link];
+      const links = [link, ...state.links];
       return { links };
     });
   },
   removeLinks(index) {
     set((state) => {
-      const links = [...state.links].splice(index, 1);
+      const links = [...state.links];
+      links.splice(index, 1);
       return { links };
     });
   },

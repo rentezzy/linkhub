@@ -3,7 +3,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Steps, message } from "antd";
 import { useState } from "react";
-import { FirstStage } from "./CreateStages";
+import { FirstStage, SecondStage } from "./CreateStages";
 
 const steps = [
   {
@@ -12,7 +12,7 @@ const steps = [
   },
   {
     title: "Links",
-    content: "Second-content",
+    content: <SecondStage />,
   },
   {
     title: "Finish",
