@@ -1,19 +1,13 @@
+import { LinkListStore, LinkStore } from "@/types/common";
 import { create } from "zustand";
 
 type State = {
-  linkList: {
-    title: string;
-    bg: string;
-  };
-  links: {
-    href: string;
-    text: string;
-    bg: string;
-  }[];
+  linkList: LinkListStore;
+  links: LinkStore[];
 };
 
 type Action = {
-  updateLinkList: (linkList: State["linkList"]) => void;
+  updateLinkList: (linkList: Partial<State["linkList"]>) => void;
   addLinks: (link: State["links"][0]) => void;
   removeLinks: (index: number) => void;
   updateLinks: (link: State["links"][0], index: number) => void;
@@ -23,7 +17,12 @@ export const useLinkListStore = create<State & Action>((set) => ({
   linkList: { title: "LinkHub", bg: "#07EFB1" },
   links: [],
   updateLinkList(linkList) {
-    set(() => ({ linkList }));
+    set((state) => ({
+      linkList: {
+        ...state.linkList,
+        ...linkList,
+      },
+    }));
   },
   addLinks(link) {
     set((state) => {

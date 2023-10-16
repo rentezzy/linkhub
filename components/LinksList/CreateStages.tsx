@@ -5,16 +5,13 @@ import { Color } from "antd/es/color-picker/color";
 import isUrl from "is-url";
 import { ChangeEventHandler } from "react";
 import { useLinkListStore } from "./LinkListStore";
+import { LinkCardPreview } from "./LinkCard";
 
 export const FirstStage = () => {
   const updateLinkList = useLinkListStore((state) => state.updateLinkList);
-  const linkList = useLinkListStore((state) => state.linkList);
-
+  const linkList = useLinkListStore((state) => state.linkList.title);
   const onTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    updateLinkList({ ...linkList, title: e.target.value });
-  };
-  const onColorChange = (color: Color) => {
-    updateLinkList({ ...linkList, bg: color.toHex() });
+    updateLinkList({ title: e.target.value });
   };
 
   return (
@@ -23,19 +20,29 @@ export const FirstStage = () => {
         <label htmlFor="link_list_create_title">Title:</label>
         <Input
           onChange={onTitleChange}
-          value={linkList.title}
+          value={linkList}
           id="link_list_create_title"
         />
       </div>
-      <div className="flex gap-2 items-center">
-        <label>Background color:</label>
-        <ColorPicker
-          showText={(color) => <span>{color.toHexString().toUpperCase()}</span>}
-          onChange={onColorChange}
-          defaultValue={linkList.bg}
-          disabledAlpha
-        />
-      </div>
+      <ColorPickerOwn />
+    </div>
+  );
+};
+const ColorPickerOwn = () => {
+  const updateLinkList = useLinkListStore((state) => state.updateLinkList);
+  const linkList = useLinkListStore((state) => state.linkList.bg);
+  const onColorChange = (color: Color) => {
+    updateLinkList({ bg: color.toHexString() });
+  };
+  return (
+    <div className="flex gap-2 items-center">
+      <label>Background color:</label>
+      <ColorPicker
+        showText={(color) => <span>{color.toHexString().toUpperCase()}</span>}
+        onChange={onColorChange}
+        defaultValue={linkList}
+        disabledAlpha
+      />
     </div>
   );
 };
@@ -74,7 +81,7 @@ export const SecondStage = () => {
         <Form.Item<SecondStageForm>
           label="Text for link"
           name="text"
-          rules={[{ required: true, message: "Please input text!" }]}
+          rules={[{ required: true, message: "Please, input text!" }]}
         >
           <Input />
         </Form.Item>
@@ -83,7 +90,7 @@ export const SecondStage = () => {
           label="Link"
           name="href"
           rules={[
-            { required: true, message: "Please input link!" },
+            { required: true, message: "Please, input link!" },
             {
               validator(_, value) {
                 const res = links.find((link) => value === link.href);
@@ -109,7 +116,7 @@ export const SecondStage = () => {
           name="bg"
           label="Background color"
           initialValue={"#d45bfc"}
-          rules={[{ required: true, message: "Please input link!" }]}
+          rules={[{ required: true }]}
         >
           <ColorPicker
             showText={(color) => (
@@ -125,25 +132,13 @@ export const SecondStage = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Divider />
+      <Divider style={{ margin: "12px 0" }} />
       <div>
-        <h2 className="text-center text-[16px]">Your links</h2>
+        <h2 className="text-center text-[16px] mb-3">Your links</h2>
         <div className="flex flex-col gap-2">
           {[...links].map((link, index) => (
             <div key={link.href} className="w-full flex items-center gap-2">
-              <div
-                className="border rounded-md flex-grow"
-                style={{ borderColor: link.bg, backgroundColor: link.bg }}
-              >
-                <Button
-                  type="link"
-                  href={link.href}
-                  target="_blank"
-                  style={{ color: "white" }}
-                >
-                  {link.text}
-                </Button>
-              </div>
+              <LinkCardPreview link={link} />
               <Button
                 type="primary"
                 icon={<CloseOutlined />}

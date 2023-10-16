@@ -1,9 +1,10 @@
 "use client";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Modal, Steps, message } from "antd";
+import { Button, Divider, Modal, Steps, message } from "antd";
 import { useState } from "react";
 import { FirstStage, SecondStage } from "./CreateStages";
+import { LinkListPrivew } from "./LinkListPrivew";
 
 const steps = [
   {
@@ -74,13 +75,15 @@ export const CreateLinkList = () => {
         keyboard
         maskClosable
       >
-        <div className="">
+        <div>
           <Steps
             current={currentStep}
             items={items}
             onChange={onChangeCurrentStep}
           />
           <div className="mt-[24px]">{steps[currentStep].content}</div>
+          <Divider style={{ margin: "12px 0" }} />
+          <LinkListPrivew />
         </div>
       </Modal>
     </div>
