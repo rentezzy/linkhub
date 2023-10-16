@@ -9,6 +9,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      link_links: {
+        Row: {
+          background: string;
+          created_at: string;
+          href: string;
+          id: number;
+          link_list_id: number;
+          text: string;
+        };
+        Insert: {
+          background?: string;
+          created_at?: string;
+          href: string;
+          id?: number;
+          link_list_id: number;
+          text: string;
+        };
+        Update: {
+          background?: string;
+          created_at?: string;
+          href?: string;
+          id?: number;
+          link_list_id?: number;
+          text?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "link_links_link_list_id_fkey";
+            columns: ["link_list_id"];
+            referencedRelation: "link_list";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       link_list: {
         Row: {
           author: string | null;

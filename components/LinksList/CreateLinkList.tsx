@@ -1,10 +1,11 @@
 "use client";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Modal, Steps, message } from "antd";
+import { Button, Divider, Modal, Steps, notification } from "antd";
 import { useState } from "react";
 import { FirstStage, SecondStage } from "./CreateStages";
 import { LinkListPrivew } from "./LinkListPrivew";
+import { useLinkListStore } from "./LinkListStore";
 
 const steps = [
   {
@@ -17,13 +18,27 @@ const steps = [
   },
   {
     title: "Finish",
-    content: "Last-content",
+    content: <LinkListPrivew />,
   },
 ];
 
 export const CreateLinkList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const createLinkList = useLinkListStore((state) => state.createLinkList);
+  const handleCreate = () => {
+    setConfirmLoading(true);
+
+    createLinkList()
+      .then((d: string) => {
+        setIsModalOpen(false);
+        setCurrentStep(0);
+        notification.success({ message: d });
+      })
+      .catch((e: string) => notification.error({ message: e }))
+      .finally(() => setConfirmLoading(false));
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -50,7 +65,10 @@ export const CreateLinkList = () => {
         title="Create your link list!"
         open={isModalOpen}
         onCancel={closeModal}
-        footer={
+        onOk={handleCreate}
+        confirmLoading={confirmLoading}
+        okText="Create"
+        footer={(_, { OkBtn }) => (
           <div style={{ marginTop: 24 }}>
             {currentStep > 0 && (
               <Button style={{ margin: "0 8px" }} onClick={() => prevStep()}>
@@ -62,16 +80,9 @@ export const CreateLinkList = () => {
                 Next
               </Button>
             )}
-            {currentStep === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
+            {currentStep === steps.length - 1 && <OkBtn />}
           </div>
-        }
+        )}
         keyboard
         maskClosable
       >
@@ -82,8 +93,12 @@ export const CreateLinkList = () => {
             onChange={onChangeCurrentStep}
           />
           <div className="mt-[24px]">{steps[currentStep].content}</div>
-          <Divider style={{ margin: "12px 0" }} />
-          <LinkListPrivew />
+          {currentStep !== steps.length - 1 && (
+            <>
+              <Divider style={{ margin: "12px 0" }} />
+              <LinkListPrivew />
+            </>
+          )}
         </div>
       </Modal>
     </div>

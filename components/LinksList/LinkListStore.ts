@@ -1,4 +1,6 @@
 import { LinkListStore, LinkStore } from "@/types/common";
+import { Database } from "@/types/database";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { create } from "zustand";
 
 type State = {
@@ -11,9 +13,10 @@ type Action = {
   addLinks: (link: State["links"][0]) => void;
   removeLinks: (index: number) => void;
   updateLinks: (link: State["links"][0], index: number) => void;
+  createLinkList: () => Promise<string>;
 };
 
-export const useLinkListStore = create<State & Action>((set) => ({
+export const useLinkListStore = create<State & Action>((set, get) => ({
   linkList: { title: "LinkHub", bg: "#07EFB1" },
   links: [],
   updateLinkList(linkList) {
@@ -43,5 +46,32 @@ export const useLinkListStore = create<State & Action>((set) => ({
       links[index] = link;
       return { links };
     });
+  },
+  async createLinkList() {
+    const linkList = get().linkList;
+    const links = get().links;
+    if (links.length === 0)
+      return Promise.reject("You must enter at least one link!");
+    const supabase = createClientComponentClient<Database>();
+    const linkList_db = (
+      await supabase
+        .from("link_list")
+        .insert({ background: linkList.bg, title: linkList.title })
+        .select("*")
+    ).data;
+    if (!linkList_db)
+      return Promise.reject("Something went wrong, try again later.");
+    const linkList_id = linkList_db[0].id;
+    for (let link of links) {
+      await supabase.from("link_links").insert({
+        href: link.href,
+        link_list_id: linkList_id,
+        text: link.text,
+        background: link.bg,
+      });
+    }
+    set(() => ({ links: [] }));
+    set(() => ({ linkList: { title: "LinkHub", bg: "#07EFB1" } }));
+    return Promise.resolve("Successfully created");
   },
 }));

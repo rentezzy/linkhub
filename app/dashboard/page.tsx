@@ -1,5 +1,5 @@
 import { CreateLinkList } from "@/components/LinksList/CreateLinkList";
-import { ColorPicker, Divider } from "antd";
+import { Divider } from "antd";
 
 export default async function Dashboard() {
   return (
