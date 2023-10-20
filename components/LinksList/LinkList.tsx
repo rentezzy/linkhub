@@ -13,6 +13,7 @@ export const LinkList = async () => {
     .eq("author", user.id);
 
   if (!lists.data) return;
+  if (lists.data.length === 0) return <p>No link list&apos;s here yet!</p>;
   return (
     <div className="flex flex-col gap-2">
       {lists.data.map((list) => (

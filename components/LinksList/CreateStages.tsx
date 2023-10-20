@@ -137,9 +137,13 @@ export const SecondStage = () => {
         <h2 className="text-center text-[16px] mb-3">Your links</h2>
         <div className="flex flex-col gap-2">
           {[...links].map((link, index) => (
-            <div key={link.href} className="w-full flex items-center gap-2">
+            <div
+              key={link.href}
+              className="max-w-full flex items-center gap-2 overflow-hidden"
+            >
               <LinkCardPreview link={link} />
               <Button
+                // className="basis-3"
                 type="primary"
                 icon={<CloseOutlined />}
                 onClick={() => removeLink(index)}

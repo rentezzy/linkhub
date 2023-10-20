@@ -59,7 +59,7 @@ export const CreateLinkList = () => {
   return (
     <div>
       <Button onClick={openModal} icon={<PlusOutlined />} type="primary">
-        CreateLink
+        Create link list!
       </Button>
       <Modal
         title="Create your link list!"

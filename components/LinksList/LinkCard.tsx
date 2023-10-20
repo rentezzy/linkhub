@@ -4,7 +4,7 @@ import { Button } from "antd";
 export const LinkCardPreview = ({ link }: { link: LinkStore }) => {
   return (
     <div
-      className="border rounded-md flex-grow"
+      className="border rounded-md flex-grow max-w-full"
       style={{ borderColor: link.bg, backgroundColor: link.bg }}
     >
       <Button
@@ -12,6 +12,7 @@ export const LinkCardPreview = ({ link }: { link: LinkStore }) => {
         href={link.href}
         target="_blank"
         style={{ color: "white" }}
+        className="overflow"
       >
         {link.text}
       </Button>
