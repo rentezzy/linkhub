@@ -15,7 +15,7 @@ export default async function DashboardLayout({
       <Header />
       <main className="min-h-[95vh] border-b border-primary">
         <div className="flex container mx-auto">
-          <section className="w-full h-20 p-2">{children}</section>
+          <section className="w-full p-2 mt-2">{children}</section>
         </div>
       </main>
     </UserProviders>
