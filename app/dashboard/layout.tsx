@@ -1,5 +1,4 @@
 import { Header } from "@/components/Layout/Header";
-import { Sidebar } from "@/components/Layout/Sidebar";
 import { UserProviders } from "@/lib/UserProvider";
 import { getSession, getUser } from "@/lib/supabase";
 export default async function DashboardLayout({
@@ -14,8 +13,7 @@ export default async function DashboardLayout({
   return (
     <UserProviders accessToken={accessToken} user={user}>
       <Header />
-      <main className="flex w-full h-[95vh] border-b border-primary">
-        <Sidebar />
+      <main className="flex container h-[95vh] border-b border-primary mx-auto">
         <section className="w-full h-20 p-2">{children}</section>
       </main>
     </UserProviders>

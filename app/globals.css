@@ -6,3 +6,7 @@
   --primary-color: #06d6a0;
   --secondary-color: #ffd166;
 }
+body {
+  background-color: #141414;
+  color: #fff;
+}

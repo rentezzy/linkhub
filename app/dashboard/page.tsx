@@ -1,4 +1,5 @@
 import { CreateLinkList } from "@/components/LinksList/CreateLinkList";
+import { LinkList } from "@/components/LinksList/LinkList";
 import { Divider } from "antd";
 
 export default async function Dashboard() {
@@ -8,6 +9,7 @@ export default async function Dashboard() {
         <CreateLinkList />
       </div>
       <Divider style={{ margin: 0 }} />
+      <LinkList />
     </div>
   );
 }
